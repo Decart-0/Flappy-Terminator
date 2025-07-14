@@ -1,22 +1,37 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpawnerBulletEnemy))]
+[RequireComponent(typeof(DetectorBulletPlayer))]
 public class Enemy : MonoBehaviour
 {
     private EnemyPool _enemyPool;
-    private ScoreCounter _scoreCounter;
+    private SpawnerBulletEnemy _spawnerBulletEnemy;
+    private DetectorBulletPlayer _detectorBulletPlayer;
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void Awake()
     {
-        if (collider.TryGetComponent(out BulletPlayer bulletPlayer)) 
-        {
-            _enemyPool.PutObject(gameObject.GetComponent<Enemy>());
-            _scoreCounter.Add();
-        }
+        _spawnerBulletEnemy = GetComponent<SpawnerBulletEnemy>();
+        _detectorBulletPlayer = GetComponent<DetectorBulletPlayer>();
     }
 
-    public void Initialize(EnemyPool pool, ScoreCounter scoreCounter)
+    private void OnEnable()
     {
-        _enemyPool = pool;
-        _scoreCounter = scoreCounter;
+        _detectorBulletPlayer.Collided += PutObject;
+    }
+
+    private void OnDisable()
+    {
+        _detectorBulletPlayer.Collided -= PutObject;
+    }
+
+    public void Initialize(EnemyPool enemyPool, BulletPoolEnemy bulletPoolEnemy)
+    {
+        _enemyPool = enemyPool;
+        _spawnerBulletEnemy.InitializePool(bulletPoolEnemy);
+    }
+
+    private void PutObject()
+    {
+        _enemyPool.PutObject(this);
     }
 }

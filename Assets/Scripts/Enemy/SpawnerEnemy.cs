@@ -1,15 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyGenerator : MonoBehaviour
+public class SpawnerEnemy : MonoBehaviour
 {
     [SerializeField] private float _delay;
     [SerializeField] private float _lowerBound;
     [SerializeField] private float _upperBound;
     [SerializeField] private float _checkRadius;
 
-    [SerializeField] private EnemyPool _pool;
-    [SerializeField] private BulletPool _bulletPool;
+    [SerializeField] private EnemyPool _enemyPool;
 
     public void StartGenerator()
     {
@@ -23,10 +22,9 @@ public class EnemyGenerator : MonoBehaviour
 
         if (IsPositionFree(spawnPoint))
         {
-            Enemy enemy = _pool.GetObject();
+            Enemy enemy = _enemyPool.GetObject();
             enemy.gameObject.SetActive(true);
             enemy.transform.position = spawnPoint;
-            enemy.GetComponent<BulletGenerator>().InitializePool(_bulletPool);
         }
     }
 

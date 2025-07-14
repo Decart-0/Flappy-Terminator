@@ -7,15 +7,30 @@ public class ScoreCounter : MonoBehaviour
 
     public event Action<int> ScoreChanged;
 
-    public void Add()
+    private void OnEnable()
     {
-        _score++;
-        ScoreChanged?.Invoke(_score);
+        DetectorBulletPlayer.Created += SubscribeToDetector;
+    }
+
+    private void OnDisable()
+    {
+        DetectorBulletPlayer.Created -= SubscribeToDetector;
     }
 
     public void Reset()
     {
         _score = 0;
         ScoreChanged?.Invoke(_score);
+    }
+
+    public void AddScore()
+    {
+        _score++;
+        ScoreChanged?.Invoke(_score);
+    }
+ 
+    private void SubscribeToDetector(DetectorBulletPlayer detector)
+    {
+        detector.Collided += AddScore;
     }
 }

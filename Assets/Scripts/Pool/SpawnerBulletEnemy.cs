@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class BulletGenerator : PoolGenerator<BulletEnemy ,BulletPool>
+public class SpawnerBulletEnemy : SpawnerObject<BulletEnemy ,BulletPoolEnemy>
 {
     [SerializeField] private float _delay = 1f;
 
-    public void InitializePool(BulletPool pool)
+    public void InitializePool(BulletPoolEnemy bulletPoolEnemy)
     {
-        Pool = pool;
+        Pool = bulletPoolEnemy;
         StartGenerator();
     }
 
@@ -19,6 +19,8 @@ public class BulletGenerator : PoolGenerator<BulletEnemy ,BulletPool>
     private IEnumerator ShootRoutine()
     {
         WaitForSeconds wait = new WaitForSeconds(_delay);
+
+        yield return wait;
 
         while (enabled)
         {

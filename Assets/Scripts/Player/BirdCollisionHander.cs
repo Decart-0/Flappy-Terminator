@@ -5,14 +5,9 @@ public class BirdCollisionHander : MonoBehaviour
 {
     public event Action<IInteractable> CollisionDetected;
 
-    private void OnValidate()
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        GetComponent<Collider2D>().isTrigger = true;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out IInteractable interactable))
+        if (collider.TryGetComponent(out IInteractable interactable))
         { 
             CollisionDetected?.Invoke(interactable);
         }

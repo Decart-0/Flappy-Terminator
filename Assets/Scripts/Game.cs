@@ -3,12 +3,13 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     [SerializeField] private Bird _bird;
+    [SerializeField] private InputService _inputService;
     [SerializeField] private StartScreen _startScreen;
     [SerializeField] private EndGameScreen _endGameScreen;
-    [SerializeField] private BulletPool _bulletPool;
+    [SerializeField] private BulletPoolEnemy _bulletPoolEnemy;
     [SerializeField] private BulletPoolPlayer _bulletPoolPlayer;
     [SerializeField] private EnemyPool _enemyPool;
-    [SerializeField] private EnemyGenerator _enemyGenerator;
+    [SerializeField] private SpawnerEnemy _spawnerEnemy;
 
     private void OnEnable()
     {
@@ -33,6 +34,7 @@ public class Game : MonoBehaviour
     private void OnGameOver()
     {
         Time.timeScale = 0;
+        _inputService.enabled = false;
         _endGameScreen.Open();
     }
 
@@ -41,18 +43,20 @@ public class Game : MonoBehaviour
         _endGameScreen.Close();
         StartGame();
     }
+
     private void OnPlayButtonClick()
     {
         _startScreen.Close();
         StartGame();
-        _enemyGenerator.StartGenerator();
+        _spawnerEnemy.StartGenerator();
     }
 
     private void StartGame()
     {
         Time.timeScale = 1;
+        _inputService.enabled = true;
         _bird.Reset();
-        _bulletPool.Reset();
+        _bulletPoolEnemy.Reset();
         _enemyPool.Reset();
         _bulletPoolPlayer.Reset();
     }

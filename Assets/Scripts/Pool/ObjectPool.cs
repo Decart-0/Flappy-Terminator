@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class ObjectPool<Object> : MonoBehaviour where Object : MonoBehaviour
 {
     [SerializeField] private Transform _container;
-    [SerializeField] private T _prefab;
+    [SerializeField] private Object _prefab;
 
-    private Queue<T> _pool = new Queue<T>();
-    private List<T> _activeObjects = new List<T>();
+    private Queue<Object> _pool = new Queue<Object>();
+    private List<Object> _activeObjects = new List<Object>();
 
-    public IEnumerable<T> PooledObjects => _pool;
+    public IEnumerable<Object> PooledObjects => _pool;
 
     public void Reset()
     {
-        foreach (T obj in _activeObjects.ToArray())
+        foreach (Object obj in _activeObjects.ToArray())
         {
             PutObject(obj);
         }
@@ -21,9 +21,9 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         _activeObjects.Clear();
     }
 
-    public virtual T GetObject()
+    public virtual Object GetObject()
     {
-        T obj;
+        Object obj;
 
         if (_pool.Count == 0)
         {
@@ -40,7 +40,7 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         return obj;
     }
 
-    public void PutObject(T obj)
+    public void PutObject(Object obj)
     {
         if (obj == null) return;
 

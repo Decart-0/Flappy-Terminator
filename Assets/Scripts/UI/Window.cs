@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public abstract class Window : MonoBehaviour
 {
     [SerializeField] protected GameObject WindowPanel;
+
     [SerializeField] private Button _actionButton;
 
     protected Button ActionButton => _actionButton;

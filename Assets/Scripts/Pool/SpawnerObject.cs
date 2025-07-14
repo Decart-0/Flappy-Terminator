@@ -1,14 +1,16 @@
 using UnityEngine;
 
-abstract public class PoolGenerator<T, U> : MonoBehaviour
-    where T : MonoBehaviour
-    where U : ObjectPool<T>
+abstract public class SpawnerObject<Object, ObjectPool> : MonoBehaviour
+    where Object : MonoBehaviour
+    where ObjectPool : ObjectPool<Object>
 {
+    [SerializeField] protected ObjectPool Pool;
+
     [SerializeField] private Transform _firePoint;
+    [SerializeField] private LayerMask _obstacleLayers;
+
     [SerializeField] private float _speed;
     [SerializeField] private float _checkRadius = 0.5f;
-    [SerializeField] protected U Pool;
-    [SerializeField] private LayerMask _obstacleLayers;
 
     protected void TryShoot()
     {
@@ -20,13 +22,14 @@ abstract public class PoolGenerator<T, U> : MonoBehaviour
 
     private void Shoot()
     {
-        T obj = Pool.GetObject();
-        obj.gameObject.SetActive(true);
+        Object obj = Pool.GetObject();
+        
         obj.transform.position = _firePoint.position;
+        obj.transform.rotation = _firePoint.rotation;
 
-        Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
+        obj.gameObject.SetActive(true);
 
-        if (rb != null)
+        if (obj.TryGetComponent(out Rigidbody2D rb))
         {
             rb.linearVelocity = _firePoint.right * _speed;
         }

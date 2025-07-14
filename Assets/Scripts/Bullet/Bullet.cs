@@ -1,15 +1,17 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 abstract public class Bullet : MonoBehaviour
 {
-    [SerializeField] protected float Speed;
-    [SerializeField] protected Color _color;
+    [SerializeField] private float _speed;
+    [SerializeField] private Color _color;
 
     private SpriteRenderer _spriteRenderer;
+    private Vector3 _movementDirection = Vector3.right;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        OnAwake();
     }
 
     private void Start()
@@ -19,6 +21,11 @@ abstract public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector3.right * Speed * Time.deltaTime);
+        transform.Translate(_movementDirection * _speed * Time.deltaTime);
+    }
+
+    protected virtual void OnAwake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 }
