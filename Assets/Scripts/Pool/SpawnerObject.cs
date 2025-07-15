@@ -1,10 +1,10 @@
 using UnityEngine;
 
-abstract public class SpawnerObject<Object, ObjectPool> : MonoBehaviour
-    where Object : MonoBehaviour
-    where ObjectPool : ObjectPool<Object>
+abstract public class SpawnerObject<TObject, TPool> : MonoBehaviour
+    where TObject : MonoBehaviour
+    where TPool : ObjectPool<TObject>
 {
-    [SerializeField] protected ObjectPool Pool;
+    [SerializeField] protected TPool Pool;
 
     [SerializeField] private Transform _firePoint;
     [SerializeField] private LayerMask _obstacleLayers;
@@ -22,17 +22,11 @@ abstract public class SpawnerObject<Object, ObjectPool> : MonoBehaviour
 
     private void Shoot()
     {
-        Object obj = Pool.GetObject();
+        TObject obj = Pool.GetObject();
         
         obj.transform.position = _firePoint.position;
         obj.transform.rotation = _firePoint.rotation;
-
         obj.gameObject.SetActive(true);
-
-        if (obj.TryGetComponent(out Rigidbody2D rb))
-        {
-            rb.linearVelocity = _firePoint.right * _speed;
-        }
     }
 
     private bool IsShootingAllowed(Vector2 position)

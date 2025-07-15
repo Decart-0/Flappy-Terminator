@@ -5,13 +5,13 @@ abstract public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Color _color;
+    [SerializeField] private Vector3 _movementDirection;
 
     private SpriteRenderer _spriteRenderer;
-    private Vector3 _movementDirection = Vector3.right;
 
     private void Awake()
     {
-        OnAwake();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -22,10 +22,5 @@ abstract public class Bullet : MonoBehaviour
     private void Update()
     {
         transform.Translate(_movementDirection * _speed * Time.deltaTime);
-    }
-
-    protected virtual void OnAwake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 }

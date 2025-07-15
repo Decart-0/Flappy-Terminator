@@ -139,3 +139,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 10
   _color: {r: 0.2996377, g: 0.754717, b: 0.23139909, a: 1}
+  _movementDirection: {x: 1, y: 0, z: 0}

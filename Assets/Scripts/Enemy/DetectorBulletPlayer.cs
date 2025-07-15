@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class DetectorBulletPlayer : MonoBehaviour
 {
-    public static event Action<DetectorBulletPlayer> Created;
+    private ScoreCounter _scoreCounter;
 
+    public event Action OnDestroyed;
     public event Action Collided;
 
     private void Awake()
     {
-        Created?.Invoke(this);
+        _scoreCounter = FindObjectOfType<ScoreCounter>();
+        _scoreCounter?.RegisterDetector(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -20,8 +22,10 @@ public class DetectorBulletPlayer : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
-        Created = null;
+        OnDestroyed?.Invoke();
+        OnDestroyed = null;
+        Collided = null;
     }
 }

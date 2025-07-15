@@ -17,6 +17,6 @@ public class SpawnerBulletPlayer : SpawnerObject<BulletPlayer, BulletPoolPlayer>
 
     private void OnDisable()
     {
-        _inputService.Attacked += TryShoot;
+        _inputService.Attacked -= TryShoot;
     }
 }
